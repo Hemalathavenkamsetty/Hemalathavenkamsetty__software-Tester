@@ -1,0 +1,59 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+import time
+
+def test_form_required_fields():
+    # Initialize the Chrome driver
+    driver = webdriver.Chrome()
+    driver.get("https://www.example.com/contact") # Use a real URL from 
+    try:
+        # Find the form and submit it without filling any fields
+        submit_button = driver.find_element(By.ID, "submit-button")
+        submit_button.click()
+
+        time.sleep(2)  # Wait for the page to react
+
+        # Check for error messages on required fields
+        # This part depends on the website's HTML, you would need to inspect the page
+        required_field_error = driver.find_element(By.CSS_SELECTOR, ".error-message")
+        if required_field_error.is_displayed():
+            print("Required field validation works as expected.")
+        else:
+            print("Required field validation FAILED.")
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+    finally:
+        driver.quit()
+
+def test_email_validation():
+    # Initialize the Chrome driver
+    driver = webdriver.Chrome()
+    driver.get("https://www.example.com/contact") # Use a real URL from
+
+    # Find the email field and enter an invalid email
+    email_field = driver.find_element(By.NAME, "email")
+    email_field.send_keys("invalid-email")
+
+    # Submit the form
+    submit_button = driver.find_element(By.ID, "submit-button")
+    submit_button.click()
+
+    time.sleep(2)
+
+ # Check for the email validation error message
+    email_error_message = driver.find_element(By.ID, "email-error-message")
+    if email_error_message.is_displayed():
+        print("Email validation works as expected.")
+    else:
+        print("Email validation FAILED.")
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+    finally:
+        driver.quit()
+
+# Run the tests
+test_form_required_fields()
+test_email_validation()  
